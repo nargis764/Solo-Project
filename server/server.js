@@ -13,12 +13,14 @@ app.use(bodyParser.urlencoded({limit:"50mb", extended:true, parameterLimit: 5000
 app.use(express.json());
 
 app.use(cors({
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
+    credentials: true
 }))
 
 app.use(cookieParser());
 
 require("./config/mongoose.config")
 require("./routes/trip.routes")(app)
+require("./routes/user.routes")(app)
 
 app.listen(process.env.MY_PORT, () => console.log(`You are connected to port ${process.env.MY_PORT}`))

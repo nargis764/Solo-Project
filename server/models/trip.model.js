@@ -8,7 +8,12 @@ const TripSchema = new mongoose.Schema({
     postedAt:{
         type:Date,
         default: new Date().toLocaleString('en-US')
-        }
+        },
+
+    postedBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }    
 }, {timestamps:true})
 
 const Trip = mongoose.model("Trip", TripSchema);

@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
 
     password: {
         type: String,
-        required: [trure, "Password is required"],
+        required: [true, "Password is required"],
         minlength:[8, "Password must be at least 8 characters"]
     }
 
@@ -43,7 +43,6 @@ UserSchema.pre("save", function(next){
         next();
     })
 })
-
 
 
 const User = mongoose.model("User", UserSchema);

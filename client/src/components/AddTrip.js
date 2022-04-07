@@ -13,6 +13,7 @@ import {faHome } from '@fortawesome/free-solid-svg-icons'
     
 
 const AddTrip = () => {
+
     const [tripDetails, setTripDetails] = useState({title:"", description:"", location:"", selectedFile:""})
     // const [title, setTitle] = useState("");
     // const [description, setDescription] = useState("");
@@ -24,32 +25,57 @@ const AddTrip = () => {
     const createTrip = (e) => {
         e.preventDefault();
         axios.post("http://localhost:8000/api/trips", 
-        tripDetails
+        tripDetails,
+
+        { withCredentials:true }
+
         )
         .then((res) => {
             console.log(res.data);
-            navigate("/")
+            navigate("/home")
         })
         .catch((err) => console.log(err))
+    }
+
+    const logoutHandler = (e) => {
+        axios.post("http://localhost:8000/api/users/logout",
+        {},
+
+        { withCredentials:true },
+
+        )
+
+        .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            navigate("/");
+        })
+
+        .catch((err) => console.log(err)
+        )
+
     }
 
 return (
     <div>
         <Navbar bg="light" expand="lg" fixed="top">       
             <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>            
-            <Link to = {"/"} style={{textDecoration: "none", color:"gray"}}><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
+            <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}}><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
+            <button onClick={logoutHandler}>Log Out</button>
         </Navbar>
+
         
         <Form onSubmit = {createTrip} className={styles.form}>
             <Form.Group className="mb-3">
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="text" name="title" value = {tripDetails.title} onChange={(e) => setTripDetails({...tripDetails, title: e.target.value})}/>
-            </Form.Group>
+        </Form.Group>
+
             
-            <Form.Group className="mb-3">
-                <Form.Label>Description</Form.Label>
-                <Form.Control type="text" name="description" value = {tripDetails.description} onChange={(e) => setTripDetails({...tripDetails, description: e.target.value})}/>
-            </Form.Group>
+        <Form.Group className="mb-3">
+            <Form.Label>Description</Form.Label>
+            <Form.Control type="text" name="description" value = {tripDetails.description} onChange={(e) => setTripDetails({...tripDetails, description: e.target.value})}/>
+        </Form.Group>
 
             <Form.Group className="mb-3">
                 <Form.Label>Location</Form.Label>

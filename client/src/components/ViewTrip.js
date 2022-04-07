@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faHome } from '@fortawesome/free-solid-svg-icons'
 
 const ViewTrip = () => {
+
     const [trip, setTrip] = useState({});
     const {id} = useParams();
     const navigate = useNavigate();
@@ -22,20 +23,21 @@ const ViewTrip = () => {
         })
         .catch((err) => console.log(err))
     },[])
+    
 
     return (
     <div>
         <Navbar bg="light" expand="lg" fixed="top">       
             <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>  
-            <Link to = {"/"} style={{textDecoration: "none", color:"gray"}}><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>                       
+            <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}}><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>                       
         </Navbar>
-        <Link to = {"/"}>Go back to my homepage</Link>
+        <Link to = {"/home"}>Go back to my homepage</Link>
         <Card style={{marginTop:"100px"}} className="w-75 mx-auto mt-20 shadow p-3 mb-5 bg-white rounded">
-            <p>{trip.title}</p>
-            <p>{trip.description}</p>
-            <p>{trip.location}</p>
-            <Card.Img src={trip.selectedFile} height="auto"></Card.Img>                    
-            <Link to = {"/"}>Edit</Link>
+            <Card.Title className="mx-auto">{trip.title}</Card.Title>            
+            <p className="mx-auto">{trip.location}</p>
+            <Card.Img src={trip.selectedFile} height="auto" className="w-75 mx-auto mt-20 shadow p-3 mb-5 bg-white rounded"></Card.Img>    
+            <p className="w-75 mx-auto">{trip.description}</p>                
+            <Link to = {`/edit/${id}`}>Edit</Link>
         </Card>        
     </div>
 )
