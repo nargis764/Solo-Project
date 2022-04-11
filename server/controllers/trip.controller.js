@@ -23,7 +23,7 @@ module.exports = {
     },
 
     getAllTrips: (req,res) => {
-        Trip.find()
+        Trip.find().sort({"postedAt":-1})
         .populate("postedBy", "username email")
         .then((allTrips) => {
             console.log(allTrips);
@@ -33,13 +33,14 @@ module.exports = {
     },
     
     getOneTrip: (req,res) => {
-        Trip.findById({_id:req.params.id})
+        Trip.findById({_id:req.params.id})        
             .then((oneTrip) => {
                 console.log(oneTrip)
                 res.json(oneTrip)
             })
             .catch((err) => console.log(err))
     },
+    
     deleteOneTrip: (req,res) => {
         Trip.deleteOne({_id:req.params.id})
             .then((deletedTrip) => {
@@ -87,7 +88,7 @@ module.exports = {
             console.log("current user")
             console.log("req.jwtpayload.id:", req.jwtpayload.id);
             Trip.find({postedBy:req.jwtpayload.id})
-            .populate("postedBy", "username")
+            .populate("postedBy", "username email")
             .then((allTripsByLoggedInUser) => {
                 console.log(allTripsByLoggedInUser)
                 res.json(allTripsByLoggedInUser)

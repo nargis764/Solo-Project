@@ -7,13 +7,15 @@ import {useNavigate} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import Carousel from "react-bootstrap/Carousel";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 //import { ArrowRight } from 'react-bootstrap-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEdit, faTrashCan, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import styles from './AddTrip.module.css';
+import { CircularProgress } from '@mui/material';
+import styles from './AllTrips.module.css';
 
 const AllTrips = (props) => {
 
@@ -21,6 +23,7 @@ const AllTrips = (props) => {
     const [user, setUser] = useState({});
     
     const navigate = useNavigate();
+    
 
     useEffect (() => {
         axios.get("http://localhost:8000/api/trips")
@@ -30,6 +33,7 @@ const AllTrips = (props) => {
         })
         .catch((err) => console.log(err))
     }, [])
+
 
     const deleteTrip = (idForDelete) => {        
         axios.delete(`http://localhost:8000/api/trips/${idForDelete}`)
@@ -74,47 +78,79 @@ const AllTrips = (props) => {
 
 return (
     <div>
-        <Navbar bg="light" expand="lg" fixed="top" className="mb-10"> 
-                    <Container className="justify-content-between">
+        !trips.length ? <CircularProgress /> : ( 
+
+        <Navbar bg="light" expand="lg" fixed="top"> 
+                    <Container>
                         <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>   
-                        <Navbar.Collapse className="justify-content-end">                            
-                            <Link to = {"/"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
+                        <Navbar.Collapse className="d-flex justify-content-end">                            
+                            {/* <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
                             <Link to = {"/add"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></Link>
-                            <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button>
+                            <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button> */}
+                            <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} ><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
+                            <Link to = {"/add"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></Link>
+                            <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button>                              
                         </Navbar.Collapse>
-                    </Container> 
+                    </Container>                                             
+        </Navbar>
 
-                    {/* <Form className="d-flex">
-                        <FormControl
-                        type="search"
-                        placeholder="Search"
-                        className="me-2"
-                        aria-label="Search"
-                    />                    
-                    <Button variant="outline-success">Search</Button>
-                    </Form>   */}                               
-                    </Navbar>
 
-                    <div style={{marginBottom:"100px"}}></div>
-        
+        <Carousel>
+            <Carousel.Item>
+                <img
+                className="d-block w-100"
+                height={500}
+                style = {{objectFit:"cover"}}
+                src="https://peakvisor.com/img/news/mount-rainier-national-park.jpg"
+                alt="First slide"
+            />           
+            </Carousel.Item>
+
+            <Carousel.Item>
+                <img
+                className="d-block w-100"
+                height={500}
+                style = {{objectFit:"cover"}}
+                src="https://d3mqmy22owj503.cloudfront.net/05/500005/images/poi/picture-lake-mount-shuksan/698-best-road-trips-in-washington-state--mount-baker-highway--picture-lake-1.jpg"
+                alt="Second slide"
+            />    
+            </Carousel.Item> 
+
+            <Carousel.Item>
+                <img
+                className="d-block w-100"
+                height={500}
+                style = {{objectFit:"cover"}}      
+                src="https://2m2q113e0bb82dsmjh4b8hcg-wpengine.netdna-ssl.com/wp-content/uploads/2022/01/Upper-Antelope-Canyon.jpg"
+                alt="Third slide"
+                />   
+            </Carousel.Item>
+        </Carousel>
+
+        <div style={{marginBottom:"40px"}}></div> 
+
+
+                
         {
             trips.map((trip,index) => {
                 return (
                     <>                  
                     
                     <Card key={index} border="light" className="w-50 mx-auto mt-20 shadow p-3 mb-5 bg-white rounded">
-                        
-                    <Link to={`/user/profile/${trip.postedBy?.username}`}>{trip.postedBy?.username}</Link>                
-                    <Card.Title className="mt-2" style={{letterSpacing: "2px"}}><Link to = {`/${trip._id}`} >{trip.title}</Link></Card.Title> 
-                    <div>
-                        <Link to = {`/edit/${trip._id}`} style={{textDecoration: "none", color:"gray"}}><FontAwesomeIcon icon={faEdit} style={{display:"inline"}}></FontAwesomeIcon></Link> 
-                    <button style={{color:"gray",border:"none", background:"white",width:"10px"}} onClick={(e) =>{deleteTrip(trip._id)}}><FontAwesomeIcon icon={faTrashCan} style={{display:"inline"}}></FontAwesomeIcon></button>                             
+                    <div className="d-flex justify-content-between">
+                        <Link to={`/user/profile/${trip.postedBy?.username}`}> {trip.postedBy?.username}</Link> 
+                    <div className="d-flex justify-content-around">
+                        <Link to = {`/edit/${trip._id}`} style={{textDecoration: "none", color:"gray", marginLeft:"5px", marginRight:"5px"}}><FontAwesomeIcon icon={faEdit} style={{display:"inline"}}></FontAwesomeIcon></Link> 
+                    <button style={{color:"gray",border:"none", background:"white", width:"10px", marginRight:"5px"}} onClick={(e) =>{deleteTrip(trip._id)}}><FontAwesomeIcon icon={faTrashCan} style={{display:"inline"}}></FontAwesomeIcon></button>                             
 
-                    </div>
+                    </div>  
+                    </div>    
+                                
+                    <Card.Title className="mt-2" style={{letterSpacing: "2px"}}><Link to = {`/${trip._id}`}>{trip.title}</Link></Card.Title> 
                     
-                    <Card.Subtitle className="my-2">{trip.location}</Card.Subtitle>  
-                    <Card.Subtitle className="mb-3">Posted: {moment(trip.postedAt).fromNow()}</Card.Subtitle>
-                    <img src={trip.selectedFile} width="400" height="300"></img>                         
+                    <Card.Subtitle className="mb-3">Posted: {moment(trip.postedAt).utcOffset('-08:00').fromNow()}</Card.Subtitle>
+                    <Card.Subtitle className="my-2">{trip.location}</Card.Subtitle> 
+                    <Card.Img src={trip.selectedFile} ></Card.Img>                         
                     <Card.Text className="mt-3">{trip.description.substring(0,300)} ...</Card.Text>     
                     <Card.Subtitle style={{letterSpacing: "4px", textDecoration: "none"}} className="mx-auto mb-3"><Link to = {`/${trip._id}`} style={{textDecoration: "none", color:"gray"}}> CONTINUE READING</Link></Card.Subtitle> 
                     <div style={{backgroundColor: "#53c3b5", width: "60px", height:"2px", margin:"auto"}}></div>                                                    
@@ -124,7 +160,8 @@ return (
                 
         })
 
-        }    
+        } 
+        )  
     </div>
 )
 }
