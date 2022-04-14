@@ -17,7 +17,8 @@ const TripSchema = new mongoose.Schema({
         },
 
     selectedFile: {
-        type:String
+        type:String,
+        required:[true, "Must upload image"]
         },
 
     postedAt:{

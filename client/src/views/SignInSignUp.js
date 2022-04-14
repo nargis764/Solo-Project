@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import SignIn from "../components/SignIn";
 import Register from "../components/Register";
+// import MapContainer from "../components/MapContainer";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -51,9 +52,8 @@ const handleShowSignUp = () => setShowSignUp(true);
                 </div>
             
             </div>
-
             
-            
+            {/* <MapContainer/> */}
         
             <SignIn handleClose = {handleCloseSignIn} handleShow = {handleShowSignIn} show = {showSignIn} setShow = {setShowSignIn}/> 
             <Register handleClose = {handleCloseSignUp} handleShow = {handleShowSignUp} show = {showSignUp} setShow = {setShowSignUp}/>

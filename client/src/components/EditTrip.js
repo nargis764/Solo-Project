@@ -11,12 +11,16 @@ import styles from './EditTrip.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEdit, faTrashCan, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
+
+
 const EditTrip = () => {
     const [tripDetails, setTripDetails] = useState({title:"", description:"", location:"", selectedFile:""})
     
     const {id} = useParams();
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+
+
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/trips/${id}`)
@@ -31,6 +35,8 @@ const EditTrip = () => {
 
     }, [])
 
+
+
     const editTrip = (e) => {
         e.preventDefault();
         axios.put(`http://localhost:8000/api/trips/${id}`, tripDetails)        
@@ -41,6 +47,7 @@ const EditTrip = () => {
         })
         .catch((err) => console.log(err))
     }
+    
 
 
     const logoutHandler = (e) => {

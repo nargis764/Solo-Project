@@ -1,37 +1,38 @@
-import React,{useEffect, useState} from 'react'
-import {useParams, useNavigate, Link} from "react-router-dom";
+import React,{useState, useEffect} from 'react'
+import axios from "axios"
+import {Link} from "react-router-dom"
+//import { Typography, Container, Grow, Grid } from '@mui/material';
+import moment from "moment";
+import {useNavigate} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Card from "react-bootstrap/Card";
-import FormControl from "react-bootstrap/FormControl";
-import axios from "axios";
+//import { ArrowRight } from 'react-bootstrap-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Comments from "./Comments"
 import { faPlus, faEdit, faTrashCan, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { CircularProgress } from '@mui/material';
 
-const ViewTrip = (props) => {
+const AllUsers = (props) => {
 
-    const [trip, setTrip] = useState({});
-    const {id} = useParams(); 
-    const {allUsers} = props;  
+    const [allUsers, setAllUsers] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/trips/${id}`)
+        axios.get("http://localhost:8000/api/allUsers"
+        )
         .then((res) => {
-            console.log(res.data);
-            setTrip(res.data)
+            console.log(res)
+            console.log(res.data)
+            setAllUsers(res.data)  
+    //         allUsers?.forEach(user => {     
+    //     // console.log(user.username)          
+    //     if(username === user.username) {
+    //         console.log(user)
+    //         setUserDetails(user)
+    //     }    
+    // })         
         })
         .catch((err) => console.log(err))
-    },[])
-
-
-    useEffect(() => {
-    console.log(allUsers)
-
-  }, [])
+    }, [])
 
 
     const logoutHandler = (e) => {
@@ -53,9 +54,7 @@ const ViewTrip = (props) => {
 
     }
 
-
-
-    return (
+return (
     <div>
         <Navbar bg="light" expand="lg" fixed="top"> 
                     <Container>
@@ -70,18 +69,19 @@ const ViewTrip = (props) => {
                     </Container>                                             
         </Navbar>
 
-
-        <Card style={{marginTop:"100px"}} className="w-75 mx-auto mt-20 shadow p-3 mb-5 bg-white rounded">
-            <Card.Title className="mx-auto">{trip.title}</Card.Title>            
-            <p className="mx-auto">{trip.location}</p>
-            <Card.Img src={trip.selectedFile} height="auto" className="w-75 mx-auto mt-20 shadow p-3 mb-5 bg-white rounded"></Card.Img> 
-            <p className="my-2"> {trip.postedBy?.username}</p>  
-            <p className="w-75 mx-auto">{trip.description}</p>                            
-            
-        </Card>  
-        {/* <Comments trip={trip}/>       */}
+        {allUsers.map((alluser,index) => {
+            return (
+                    <> 
+                    <img src={alluser.avatar} height="50px" width="50px"></img>                 
+                    <p>{alluser.email}</p>
+                    <p>{alluser.bio}</p>
+                    
+                    </>
+                    )            
+        })}
+    
     </div>
 )
 }
 
-export default ViewTrip
+export default AllUsers

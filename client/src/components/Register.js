@@ -44,7 +44,7 @@ const Register = (props) => {
                 //     confirmPassword: "",
                 // });
                 setConfirmReg(
-                    "Thank you for Sign in",
+                    "Thank you for signing up, you can log in now",
                 );
                 setErrors({}); 
             })
@@ -70,7 +70,7 @@ const Register = (props) => {
 
                 <Modal.Body>
 
-                    {confirmReg ? <h4 style={{ color: "green" }}>{confirmReg}</h4> : null}
+                    
 
                     <form onSubmit={register}>
                         <FormGroup>
@@ -140,9 +140,11 @@ const Register = (props) => {
                             
                         </FormGroup>
 
-                        <button style={{background:"#0d6efd", width:"470px", height: "40px", color:"#ffffff", borderRadius: "5px", border:"none"}}>Sign Up</button>
+                        <button style={{background:"#0d6efd", width:"470px", height: "40px", color:"#ffffff", borderRadius: "5px", border:"none", marginTop:"8px"}}>Sign Up</button>
             
                     </form>
+
+                    {confirmReg ? <p style={{ color: "green" }}>{confirmReg}</p> : null}
         
                 </Modal.Body>
 

@@ -16,7 +16,7 @@ module.exports = {
                 })
             })
             .catch((err) => {
-                console.log("Registration not successful");
+                console.log("Registration was not successful");
                 res.status(400).json(err)
             })
     },
@@ -70,6 +70,8 @@ module.exports = {
         })
     },
 
+    
+
     logout: (req,res) => {
         console.log("logging out");
         res.clearCookie("usertoken");
@@ -78,19 +80,17 @@ module.exports = {
         })
     },
 
-    getLoggedInUser: (req,res) => {
-        // const decodedJWT = jwt.decode(req.cookies.usertoken, {
-        //     complete:true
-        // })
+    getLoggedInUser: (req, res)=>{
 
-        User.findOne({_id:req.jwtpayload.id}) 
-        .then((user) => {
-            console.log(user);
-            res.json(user)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+        User.findOne({_id: req.jwtpayload.id})
+            .then((user)=>{
+                console.log(user);
+                res.json(user)
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+
     },
 
     getAllUsers: (req,res) => {
@@ -102,6 +102,18 @@ module.exports = {
             console.log("get all users failed")
             res.json({message: "Something went wrong in getAll", error: err})
         })
-    }
-}
+    },
 
+    updateUser: (req,res) => {        
+
+            User.findOneAndUpdate({username:req.params.username}, req.body, {new:true, runValidators:true})
+            .then((updateUser) => {
+                console.log(updateUser)
+                res.json(updateUser)
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(400).json(err);
+            })
+    },
+}

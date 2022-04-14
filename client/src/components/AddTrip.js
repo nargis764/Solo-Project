@@ -38,6 +38,7 @@ const AddTrip = (props) => {
         })
         .catch((err) => {
             console.log(err);
+            console.log(err.response.data);
             setErrors(err.response.data.errors);
             })
     }
@@ -68,10 +69,11 @@ return (
                         <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>   
                         <Navbar.Collapse className="justify-content-end">                            
                             <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
-                            <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button>
+                            <button onClick = {logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button>
                         </Navbar.Collapse>
                     </Container>                                             
         </Navbar>
+
                 
         <Form onSubmit = {createTrip} className={styles.form}>
             <Form.Group className="mb-3">
@@ -109,15 +111,24 @@ return (
             }
             
             <Form.Group className="mb-3">
-                <FileBase64 type = "file" multiple={false} onDone={({ base64 }) => setTripDetails({ ...tripDetails, selectedFile: base64 })} />        
+                <FileBase64 type = "file" multiple={false} onDone={({ base64 }) => setTripDetails({ ...tripDetails, selectedFile: base64 })} />                            
             </Form.Group>
+
+            
+            {
+                errors.selectedFIle? 
+                <p style={{color:"red"}}>{errors.selectedFile.message}</p>
+                :null
+            }
 
             {/* <Form.Group controlId="formFileSm" className="mb-3">
                 <Form.Label>Small file input example</Form.Label>
                 <Form.Control type="file" size="sm" />
             </Form.Group> */}
             
-            <button className={styles.button1}>Add my trip</button>
+            <button className={styles.button1}>Add my trip</button> 
+            {/* <Button variant="primary" className="btn-primary">Add my trip</Button> */}
+
         </Form>
     </div>
 )

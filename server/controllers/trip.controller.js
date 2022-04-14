@@ -50,8 +50,9 @@ module.exports = {
             .catch((err) => console.log(err))
     },
 
+
     updateTrip: (req,res) => {
-        Trip.updateOne({_id:req.params.id},req.body,{new:true,runValidators:true})
+        Trip.updateOne({_id:req.params.id}, req.body, {new:true,runValidators:true})
             .then((updateTrip) => {
                 console.log(updateTrip)
                 res.json(updateTrip)
@@ -61,6 +62,7 @@ module.exports = {
                 res.status(400).json(err);
             })
     },
+    
 
     findAllTripsByUser: (req,res) => {
         if (req.jwtpayload.username !== req.params.username) {
