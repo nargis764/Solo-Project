@@ -10,16 +10,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEdit, faTrashCan, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import styles from './ViewTrip.module.css';
 import { CircularProgress } from '@mui/material';
+import Comments from "./Comments"
 
 
 const ViewTrip = (props) => {
 
     const [trip, setTrip] = useState({});
+    
     //const [temp, setTemp] = useState("");
-    const [comment, setComment] = useState([]);
+   // const [comment, setComment] = useState([]);
     const {id} = useParams(); 
-    //const {allUsers} = props;  
     const navigate = useNavigate();
+
+    // const [text, setText] = useState("");
+
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/trips/${id}`)
@@ -61,7 +65,38 @@ const ViewTrip = (props) => {
 
     }
 
+    // const postComment = (text,postId) => {
+    //     axios.put(`http://localhost:8000/api/comment`,{
+    //         text: text,
+    //         postId: postId
+            
+    //     },
+
+    //     { withCredentials:true },
+
+    //     )
+    //     .then((res) => {
+    //         console.log(res)
+    //         console.log(res.data)
+
+    //         const newComment = res.data.comments.map((thistrip) => {
+    //             if(thistrip._id === res.data._id) {                                      
+    //                 return res.data;
+    //             } else {                    
+    //                 return thistrip
+    //             }                
+                
+    //         })
+
+    //         console.log(newComment)
+    //         setComment({...comment , newComment})
+    //     })
+        
+    // }
+
+
     const postComment = (text,postId) => {
+        
         axios.put(`http://localhost:8000/api/comment`,{
             text: text,
             postId: postId
@@ -84,8 +119,8 @@ const ViewTrip = (props) => {
                 
             })
 
-            console.log(newComment)
-            setComment({...comment , newComment})
+            // console.log(newComment)
+            setTrip({...trip , comments:newComment})            
         })
         
     }
@@ -97,10 +132,8 @@ const ViewTrip = (props) => {
         <Navbar bg="light" expand="lg" fixed="top"> 
                     <Container>
                         <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>   
-                        <Navbar.Collapse className="d-flex justify-content-end">                            
-                            {/* <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
-                            <Link to = {"/add"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></Link>
-                            <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button> */}
+                        <Navbar.Collapse className="d-flex justify-content-end">      
+                    
                             <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
                             <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button>                              
                         </Navbar.Collapse>
@@ -125,33 +158,17 @@ const ViewTrip = (props) => {
                     
                         <Card.Text key={record._id} className="w-75 mx-auto bg-light"><span style={{fontWeight:"bold"}}>{record.postedBy?.username} </span>{record.text}</Card.Text>
             )
-                // <h6><span>{record.postedBy.username}</span>{record.text}</h6>
-                
+                                
             })
             
             }
 
-    
-
-        <Form  className="w-50 mx-auto" onSubmit={(e) => {
-            e.preventDefault()
-            console.log(e.target)
-            console.log(e.target[0].value)
-            postComment(e.target[0].value, trip._id)
-            setComment("");
-            }}>
-            
-            <Form.Control type="text" placeholder='Write a comment..'/>
-            {/* <button>Post</button> */}
-        </Form>
                     
-            
+        <Comments tripId={trip._id} onSubmitProp={postComment}/>    
         </Card>  
-
-
     
 
-        {/* <Comments trip={trip}/> */}
+        
     </div>
 )
 }

@@ -25,7 +25,7 @@ const App = () => {
         <Route path = "/home" element = {<AllTrips trips = {trips} setTrips = {setTrips}/>}/>     
         <Route path = "/add" element = {<AddTrip/>}/>       
         <Route path = "/edit/:id" element = {<EditTrip/>}/>
-        <Route path = "/:id" element = {<ViewTrip/>}/>
+        <Route path = "/:id" element = {<ViewTrip trips = {trips} setTrips = {setTrips}/>}/>
         <Route path = "/user/profile/:username" element = {<Profile/>}/>
         <Route path="/allusers" element = {<AllUsers/>}/>
         <Route path="/updateuser/:username" element = {<SetProfile/>}/>

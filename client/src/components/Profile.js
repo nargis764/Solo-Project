@@ -102,11 +102,9 @@ return (
         <Navbar bg="light" expand="lg" fixed="top"> 
                     <Container>
                         <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>   
-                        <Navbar.Collapse className="d-flex justify-content-end">                            
-                            {/* <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
-                            <Link to = {"/add"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></Link>
-                            <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button> */}
+                        <Navbar.Collapse className="d-flex justify-content-end">                           
                             <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
+                            <Link to = {"/add"} style={{textDecoration: "none", color:"gray"}} className="me-5"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></Link>
                             <button onClick={logoutHandler} className={styles.btn1}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button>                              
                         </Navbar.Collapse>
                     </Container>                                             
