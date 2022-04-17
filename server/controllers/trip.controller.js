@@ -2,6 +2,7 @@ const Trip = require("../models/trip.model")
 const User = require("../models/user.model")
 const jwt = require("jsonwebtoken");
 
+
 module.exports = {
     createTrip: (req,res) => {
         const newTripObject = new Trip(req.body);
@@ -13,7 +14,7 @@ module.exports = {
 
         newTripObject.save()
             .then((newTrip) => {
-                console.log(newTrip)
+                //console.log(newTrip)
                 res.json(newTrip)
             })
             .catch((err) => {
@@ -22,24 +23,30 @@ module.exports = {
             })
     },
 
+
     getAllTrips: (req,res) => {
         Trip.find().sort({"postedAt":-1})
         .populate("postedBy", "username email")
+        .populate("comments", "text")
+        .populate("comments.postedBy", "_id username")
         .then((allTrips) => {
-            console.log(allTrips);
+           // console.log(allTrips);
             res.json(allTrips)
         })
         .catch((err) => console.log(err))
     },
+
     
     getOneTrip: (req,res) => {
-        Trip.findById({_id:req.params.id})        
+        Trip.findOne({_id:req.params.id})  
+            .populate("comments.postedBy", "_id username")      
             .then((oneTrip) => {
-                console.log(oneTrip)
+                //console.log(oneTrip)
                 res.json(oneTrip)
             })
             .catch((err) => console.log(err))
     },
+
     
     deleteOneTrip: (req,res) => {
         Trip.deleteOne({_id:req.params.id})
@@ -54,7 +61,7 @@ module.exports = {
     updateTrip: (req,res) => {
         Trip.updateOne({_id:req.params.id}, req.body, {new:true,runValidators:true})
             .then((updateTrip) => {
-                console.log(updateTrip)
+                //console.log(updateTrip)
                 res.json(updateTrip)
             })
             .catch((err) => {
@@ -72,7 +79,7 @@ module.exports = {
                 Trip.find({postedBy: userNotLoggedIn._id})
                 .populate("postedBy", "username")
                 .then((allTripsByUser) => {
-                    console.log(allTripsByUser)
+                   // console.log(allTripsByUser)
                     res.json(allTripsByUser)
                 })
                 .catch((err) => {
@@ -92,7 +99,7 @@ module.exports = {
             Trip.find({postedBy:req.jwtpayload.id})
             .populate("postedBy", "username email")
             .then((allTripsByLoggedInUser) => {
-                console.log(allTripsByLoggedInUser)
+               // console.log(allTripsByLoggedInUser)
                 res.json(allTripsByLoggedInUser)
             })
             .catch((err) => {
@@ -100,6 +107,30 @@ module.exports = {
                     res.status(400).json(err)
             })
         }
+    },
+
+
+    createComment: (req,res) => {
+        const comment = {
+            text:req.body.text,
+            postedBy:req.jwtpayload.id
+        }    
+
+        
+
+        Trip.findByIdAndUpdate(req.body.postId, {
+            $push:{comments:comment}
+            } , {new:true, runValidators:true} )
+            .populate("comments.postedBy", "_id username")   
+            .populate("postedBy", "_id username")         
+            .then((comment) => {
+                //console.log(comment)
+                res.json(comment)
+            })
+            .catch((err) => {
+                    console.log(err)
+                    res.status(400).json(err)
+            })
     }
 
 }

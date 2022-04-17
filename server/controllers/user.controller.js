@@ -83,9 +83,22 @@ module.exports = {
     getLoggedInUser: (req, res)=>{
 
         User.findOne({_id: req.jwtpayload.id})
-            .then((user)=>{
-                console.log(user);
-                res.json(user)
+            .then((loggedinuser)=>{
+                console.log(loggedinuser);
+                res.json(loggedinuser)
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+
+    },
+
+    getAnyUser: (req, res)=>{
+
+        User.findOne({username: req.params.username})
+            .then((anyuser)=>{
+                console.log(anyuser);
+                res.json(anyuser)
             })
             .catch((err)=>{
                 console.log(err);

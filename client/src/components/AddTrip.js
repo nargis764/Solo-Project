@@ -16,7 +16,7 @@ import { faPlus, faEdit, faTrashCan, faHome, faSignOutAlt } from '@fortawesome/f
 
 const AddTrip = (props) => {
 
-    const [tripDetails, setTripDetails] = useState({title:"", description:"", location:"", selectedFile:""})
+    const [tripDetails, setTripDetails] = useState({title:"", description:"", location:"",longitude:"", latitude:"", selectedFile:""})
     // const [title, setTitle] = useState("");
     // const [description, setDescription] = useState("");
     // const [location, setLocation] = useState("");
@@ -75,7 +75,7 @@ return (
         </Navbar>
 
                 
-        <Form onSubmit = {createTrip} className={styles.form}>
+        <Form onSubmit = {createTrip} method="post" className={styles.form}>
             <Form.Group className="mb-3">
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="text" name="title" value = {tripDetails.title} onChange={(e) => setTripDetails({...tripDetails, title: e.target.value})}/>
@@ -109,6 +109,16 @@ return (
                 <p style={{color:"red"}}>{errors.location.message}</p>
                 :null
             }
+
+            {/* <Form.Group className="mb-3">
+                <Form.Label>Longitude</Form.Label>
+                <Form.Control type="text" name="location" value = {tripDetails.longitude} onChange={(e) => setTripDetails({...tripDetails, longitude: e.target.value})}/>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+                <Form.Label>Latitude</Form.Label>
+                <Form.Control type="text" name="location" value = {tripDetails.latitude} onChange={(e) => setTripDetails({...tripDetails, latitude: e.target.value})}/>
+            </Form.Group> */}
             
             <Form.Group className="mb-3">
                 <FileBase64 type = "file" multiple={false} onDone={({ base64 }) => setTripDetails({ ...tripDetails, selectedFile: base64 })} />                            

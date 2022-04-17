@@ -20,7 +20,7 @@ const AllTrips = (props) => {
 
     const {trips, setTrips} = props;
     const [user, setUser] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
+   // const [isLoading, setIsLoading] = useState(false);
     
     const navigate = useNavigate();
     
@@ -28,10 +28,10 @@ const AllTrips = (props) => {
     useEffect (() => {
         axios.get("http://localhost:8000/api/trips")
         .then((res) => {
-            setIsLoading(true);
+            //setIsLoading(true);
             console.log(res.data);            
             setTrips(res.data);
-            setIsLoading(false);
+           // setIsLoading(false);
         })
         .catch((err) => console.log(err))
     }, [])
@@ -147,10 +147,19 @@ return (
                         <div className="d-flex justify-content-between">
                             {/* <img style={{border:"1px solid gray", borderRadius:"50%", height:"35px", width:"35px"}} src={trip.postedBy?.avatar}></img> */}
                             <Link to={`/user/profile/${trip.postedBy?.username}`}> {trip.postedBy?.username}</Link> 
+                    
+
+                            {/* the loggedin user can only edit or delete their post */}
+                            {trip.postedBy?.username === user.username &&
+
                             <div className="d-flex justify-content-around">
                                 <Link to = {`/edit/${trip._id}`} style={{textDecoration: "none", color:"gray", marginLeft:"5px", marginRight:"5px"}}><FontAwesomeIcon icon={faEdit} style={{display:"inline"}}></FontAwesomeIcon></Link>
                                 <button style={{color:"gray",border:"none", background:"white", width:"10px", marginRight:"5px"}} onClick={(e) =>{deleteTrip(trip._id)}}><FontAwesomeIcon icon={faTrashCan} style={{display:"inline"}}></FontAwesomeIcon></button>                             
                             </div>  
+
+                            } 
+
+
                         </div>    
                                 
                         <Card.Title className="mt-2" style={{letterSpacing: "2px"}}><Link to = {`/${trip._id}`}>{trip.title}</Link></Card.Title> 

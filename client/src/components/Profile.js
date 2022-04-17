@@ -28,30 +28,32 @@ const Profile = (props) => {
     
     //retrieving information of all users
 
-    useEffect(() => {
-        axios.get("http://localhost:8000/api/allUsers"
-        )
-        .then((res) => {
-           // console.log(res)
-           // console.log(res.data)
-            setAllUsers(res.data)  
-    //         allUsers?.forEach(user => {     
+    // useEffect(() => {
+    //     axios.get("http://localhost:8000/api/allUsers"
+    //     )
+    //     .then((res) => {
+    //         console.log(res)
+    //         console.log(res.data)
+    //         setAllUsers(res.data)  
+    //         allUsers?.forEach(currentuser => {     
     //     // console.log(user.username)          
-    //     if(username === user.username) {
-    //         console.log(user)
-    //         setUserDetails(user)
+    //     if(username === currentuser.username) {
+    //         console.log(currentuser)
+    //         setUserDetails(currentuser)
     //     }    
     // })         
+    //     })
+    //     .catch((err) => console.log(err))
+    // }, [])
 
-        const user = allUsers.filter((user) => {return user.username.includes(`${username}`)})
-        console.log(user)
-        setUserDetails(user)
 
+    useEffect(() => {
+        axios.get(`http://localhost:8000/api/user/${username}`)
+        .then((res) => {
+            setUserDetails(res.data)
         })
         .catch((err) => console.log(err))
     }, [])
-
-
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/tripsbyuser/${username}`,
@@ -63,6 +65,7 @@ const Profile = (props) => {
             console.log(res)
             console.log(res.data)
             setTripListByUser(res.data)
+        
         })
         .catch((err) => console.log(err))
     },[])
@@ -149,18 +152,21 @@ return (
 
             
             <div>
-                <Card className="w-50 mt-20 shadow p-3 mb-5 mx-auto bg-white rounded">
+                <Card className="w-75 mt-20 shadow p-3 mb-5 mx-auto bg-white rounded">
                     <Card.Title>Hello, This is {username}</Card.Title>                     
+                
+                    <img  src={userDetails?.avatar}  width="50px" height="auto" style={{color:"gray", marginBottom:"5px", borderRadius:"50%"}}></img> 
                     <Link to = {`/updateuser/${username}`} style={{textDecoration: "none", color:"gray", marginLeft:"5px", marginRight:"5px"}}><FontAwesomeIcon icon={faEdit} style={{display:"inline"}}></FontAwesomeIcon></Link> 
-                    <Card.Subtitle style={{color:"gray", marginBottom:"5px"}}>{userDetails?.email}</Card.Subtitle>                   
-                    <Card.Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Card.Text>
+                    <Card.Subtitle style={{color:"gray", marginBottom:"5px"}}>{userDetails?.email}</Card.Subtitle>
+                                        
+                    {/* <Card.Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Card.Text> */}
+                    <Card.Text>{userDetails?.bio}</Card.Text>
                 </Card>                
             </div>
 
 
         </div>
         {/* ) */}
-
 
 
     </div>

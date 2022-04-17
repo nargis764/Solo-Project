@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser");
+const axios = require("axios");
 
 const app = express();
 
@@ -20,7 +21,14 @@ app.use(cors({
 app.use(cookieParser());
 
 require("./config/mongoose.config")
+
 require("./routes/trip.routes")(app)
 require("./routes/user.routes")(app)
+
+require("./weather")(app)
+
+
+
+//app.listen(process.env.MY_PORT, () => console.log("You are connected to port 8000"))
 
 app.listen(process.env.MY_PORT, () => console.log(`You are connected to port ${process.env.MY_PORT}`))

@@ -3,19 +3,22 @@ import {useParams, useNavigate, Link} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import Card from "react-bootstrap/Card";
 import FormControl from "react-bootstrap/FormControl";
+import Card from "react-bootstrap/Card";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Comments from "./Comments"
 import { faPlus, faEdit, faTrashCan, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import styles from './ViewTrip.module.css';
 import { CircularProgress } from '@mui/material';
+
 
 const ViewTrip = (props) => {
 
     const [trip, setTrip] = useState({});
+    //const [temp, setTemp] = useState("");
+    const [comment, setComment] = useState([]);
     const {id} = useParams(); 
-    const {allUsers} = props;  
+    //const {allUsers} = props;  
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,10 +31,15 @@ const ViewTrip = (props) => {
     },[])
 
 
-    useEffect(() => {
-    console.log(allUsers)
+    // useEffect(() => {
+    //     axios.get("http://localhost:8000/weather")
+    //     .then((res) => {
+    //         console.log(res.data)
+    //         setTemp(res.data)
+    //     })    
+    //     .catch((err) => console.log(err))
 
-  }, [])
+    // }, [])
 
 
     const logoutHandler = (e) => {
@@ -53,6 +61,35 @@ const ViewTrip = (props) => {
 
     }
 
+    const postComment = (text,postId) => {
+        axios.put(`http://localhost:8000/api/comment`,{
+            text: text,
+            postId: postId
+            
+        },
+
+        { withCredentials:true },
+
+        )
+        .then((res) => {
+            console.log(res)
+            console.log(res.data)
+
+            const newComment = res.data.comments.map((thistrip) => {
+                if(thistrip._id === res.data._id) {                                      
+                    return res.data;
+                } else {                    
+                    return thistrip
+                }                
+                
+            })
+
+            console.log(newComment)
+            setComment({...comment , newComment})
+        })
+        
+    }
+
 
 
     return (
@@ -72,14 +109,49 @@ const ViewTrip = (props) => {
 
 
         <Card style={{marginTop:"100px"}} className="w-75 mx-auto mt-20 shadow p-3 mb-5 bg-white rounded">
-            <Card.Title className="mx-auto">{trip.title}</Card.Title>            
+            <Card.Title className="mx-auto">{trip.title}</Card.Title> 
+            {/* <p>{temp}</p>            */}
             <p className="mx-auto">{trip.location}</p>
             <Card.Img src={trip.selectedFile} height="auto" className="w-75 mx-auto mt-20 shadow p-3 mb-5 bg-white rounded"></Card.Img> 
             <p className="my-2"> {trip.postedBy?.username}</p>  
-            <p className="w-75 mx-auto">{trip.description}</p>                            
+            <Card.Text className="w-75 mx-auto">{trip.description}</Card.Text>  
+            <Card.Text> <div style={{backgroundColor: "lightgray", height:"1px"}} className="w-75 mx-auto"></div></Card.Text> 
+            
+
+
+            {
+            trip?.comments?.map((record) => {
+                return (  
+                    
+                        <Card.Text key={record._id} className="w-75 mx-auto bg-light"><span style={{fontWeight:"bold"}}>{record.postedBy?.username} </span>{record.text}</Card.Text>
+            )
+                // <h6><span>{record.postedBy.username}</span>{record.text}</h6>
+                
+            })
+            
+            }
+
+    
+
+        <Form  className="w-50 mx-auto" onSubmit={(e) => {
+            e.preventDefault()
+            console.log(e.target)
+            console.log(e.target[0].value)
+            postComment(e.target[0].value, trip._id)
+            setComment("");
+            }}>
+            
+            <Form.Control type="text" placeholder='Write a comment..'/>
+            {/* <button>Post</button> */}
+        </Form>
+                    
             
         </Card>  
-        {/* <Comments trip={trip}/>       */}
+
+
+    
+
+        {/* <Comments trip={trip}/> */}
     </div>
 )
 }

@@ -33,10 +33,13 @@ const SetProfile = () => {
             bio: bio,
             avatar: avatar,
             email: email
-        })
+        },
+        
+        { withCredentials:true },
+        )
         .then((res) => {
             console.log(res);
-            navigate("/home");
+            navigate(`/user/profile/${username}`);
         })
         .catch((err) => {
             console.log(err);

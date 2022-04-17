@@ -8,5 +8,6 @@ module.exports = (app) => {
     app.get("/api/trips/:id", TripController.getOneTrip);
     app.get("/api/tripsbyuser/:username", authenticate, TripController.findAllTripsByUser);     
     app.delete("/api/trips/:id", TripController.deleteOneTrip);
-    app.put("/api/trips/:id", TripController.updateTrip);    
+    app.put("/api/trips/:id", TripController.updateTrip);  
+    app.put("/api/comment", authenticate, TripController.createComment);   
 }

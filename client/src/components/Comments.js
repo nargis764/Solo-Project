@@ -1,42 +1,27 @@
-import React, {useState, useRef} from 'react'
+import React, {useState} from 'react'
+import axios from "axios";
+import Form from "react-bootstrap/Form";
+
 
 const Comments = (props) => {
 
-  const {trip} = props;
+    const [comment, setComment] = useState([]);
 
-  const [comments, setComments] = useState([1,2,3,4])
-  const [comment, setComment] = useState("");
-
-
-  // const submitHandler = () => {
-  //   const finalComment = `${user.username}: ${comment}`;
-
-    
-
-  // }
-
-  return (
+return (
     <div>
-      <h1>Comments</h1>
-      {comments.map((comment,index) => (
-        <div key = {index}>
-          Comment {index}
-        </div>
-      )
-        
-      )}
-
-      <h2>Post a comment</h2>
-      <input 
-      type="text" 
-      value= {comment}
-      onChange={(e) => setComment(e.target.value)}      
-      />
-
-      {/* <button disabled={!comment} onClick = {submitHandler}>comment</button> */}
-
+        <Form  className="w-50 mx-auto" onSubmit={(e) => {
+            e.preventDefault()
+            console.log(e.target)
+            console.log(e.target[0].value)
+            postComment(e.target[0].value, trip._id)
+            setComment("");
+            }}>
+            
+            <Form.Control type = "text" placeholder = 'Write a comment..'/>
+            {/* <button>Post</button> */}
+        </Form>
     </div>
-  )
+)
 }
 
 export default Comments
