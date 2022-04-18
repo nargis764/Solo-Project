@@ -56,29 +56,31 @@ const SignIn = (props) => {
                 <Modal.Body>
                     
                     <form onSubmit={login}>
-                        <FormGroup>
-                            <Form.Label>Email address</Form.Label>
+                        <FormGroup className="mt-2">
+                            {/* <Form.Label>Email address</Form.Label> */}
                             <Form.Control
                             type="text"
                             name="email"
                             value={email}
+                            placeholder = "Email"
                             onChange={(e) => setEmail(e.target.value)}
                             />
                         </FormGroup>
 
-                        <FormGroup>
-                            <Form.Label>Password</Form.Label>
+                        <FormGroup className="mt-4">
+                            {/* <Form.Label>Password</Form.Label> */}
                             <Form.Control
                             type="password"
                             name="password"
                             value={password}
+                            placeholder = "Password"
                             onChange={(e) => setPassword(e.target.value)}
                             />
                         </FormGroup>
 
                         <p className="error-text mt-2" style={{color:"red"}}>{errorMessage ? errorMessage : ""}</p>
 
-                        <button  style={{background:"#0d6efd", width:"470px", height: "40px", color:"#ffffff", borderRadius: "5px", border:"none"}}>Sign In</button> 
+                        <button  className="mt-2" style={{background:"#0d6efd", width:"470px", height: "40px", color:"#ffffff", borderRadius: "5px", border:"none"}}>Sign In</button> 
                                     
                     </form>
         

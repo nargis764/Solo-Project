@@ -2,8 +2,6 @@ import React,{useEffect, useState} from 'react'
 import {useParams, useNavigate, Link} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
 import Card from "react-bootstrap/Card";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,12 +15,10 @@ const ViewTrip = (props) => {
 
     const [trip, setTrip] = useState({});
     
-    //const [temp, setTemp] = useState("");
-   // const [comment, setComment] = useState([]);
+    //const [temperature, setTemperature] = useState("");   
     const {id} = useParams(); 
     const navigate = useNavigate();
 
-    // const [text, setText] = useState("");
 
 
     useEffect(() => {
@@ -39,7 +35,7 @@ const ViewTrip = (props) => {
     //     axios.get("http://localhost:8000/weather")
     //     .then((res) => {
     //         console.log(res.data)
-    //         setTemp(res.data)
+    //         setTemperature(res.data)
     //     })    
     //     .catch((err) => console.log(err))
 
@@ -135,7 +131,10 @@ const ViewTrip = (props) => {
                         <Navbar.Collapse className="d-flex justify-content-end">      
                     
                             <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
-                            <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button>                              
+                            <button onClick={logoutHandler} 
+                            style={{color:"gray",border:"none", background:"white",width:"10px"}}>
+                                <FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon>
+                            </button>                              
                         </Navbar.Collapse>
                     </Container>                                             
         </Navbar>
@@ -154,9 +153,12 @@ const ViewTrip = (props) => {
 
             {
             trip?.comments?.map((record) => {
-                return (  
-                    
-                        <Card.Text key={record._id} className="w-75 mx-auto bg-light"><span style={{fontWeight:"bold"}}>{record.postedBy?.username} </span>{record.text}</Card.Text>
+                return (                    
+
+                        <Card.Text key={record._id} className="w-75 mx-auto bg-light text-muted">
+                            <span className="text-primary fw-bold">{record.postedBy?.username} </span>
+                            {record.text}
+                        </Card.Text>
             )
                                 
             })

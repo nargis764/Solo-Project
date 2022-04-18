@@ -13,10 +13,11 @@ const Register = (props) => {
     const [password, setPassword] = useState("");
     const [confirmPassword,setConfirmPassword] = useState("");
 
-    const [confirmReg, setConfirmReg] = useState("");
+    const [confirmReg, setConfirmReg] = useState(false);
     const [errors, setErrors] = useState({});
 
-    const {show, setShow, handleShow, handleClose} = props;
+    const {show, setShowSignIn, handleShow, handleClose} = props;
+
 
     const register = (e) => {
         e.preventDefault();
@@ -37,14 +38,10 @@ const Register = (props) => {
                 setEmail("");
                 setPassword("");
                 setConfirmPassword("");
-                // setUser({
-                //     username: "",
-                //     email: "",
-                //     password: "",
-                //     confirmPassword: "",
-                // });
+                
                 setConfirmReg(
-                    "Thank you for signing up, you can log in now",
+                    true
+                    
                 );
                 setErrors({}); 
             })
@@ -69,16 +66,15 @@ const Register = (props) => {
                 </Modal.Header>
 
                 <Modal.Body>
-
                     
 
                     <form onSubmit={register}>
-                        <FormGroup>
-                            <Form.Label>User Name</Form.Label>
+                        <FormGroup className="mt-2">                            
                             <Form.Control
                             type="text"
                             name="username"
                             value={username}
+                            placeholder = "User Name"
                             onChange={(e) => setUserName(e.target.value)}
                             />
 
@@ -90,12 +86,12 @@ const Register = (props) => {
                             
                         </FormGroup>
 
-                        <FormGroup>
-                            <Form.Label>Email address</Form.Label>
+                        <FormGroup className="mt-4">                            
                             <Form.Control
                             type="text"
                             name="email"
                             value={email}
+                            placeholder = "Email"
                             onChange={(e) => setEmail(e.target.value)}
                             />
 
@@ -107,12 +103,12 @@ const Register = (props) => {
                             
                         </FormGroup>
 
-                        <FormGroup>
-                            <Form.Label>Password</Form.Label>
+                        <FormGroup className="mt-4">                            
                             <Form.Control
                             type="password"
                             name="password"
                             value={password}
+                            placeholder = "Password"
                             onChange={(e) => setPassword(e.target.value)}
                             />
                             
@@ -124,12 +120,12 @@ const Register = (props) => {
                             
                         </FormGroup>
 
-                        <FormGroup>
-                            <Form.Label>Confirm Password</Form.Label>
+                        <FormGroup className="mt-4">                            
                             <Form.Control
                             type="password"
                             name="confirmPassword"
                             value={confirmPassword}
+                            placeholder = "Confirm Password"
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             />
                             {errors.confirmPassword ? (
@@ -140,11 +136,15 @@ const Register = (props) => {
                             
                         </FormGroup>
 
-                        <button style={{background:"#0d6efd", width:"470px", height: "40px", color:"#ffffff", borderRadius: "5px", border:"none", marginTop:"8px"}}>Sign Up</button>
+                        <button 
+                        className="mt-4"
+                        style={{background:"#0d6efd", width:"470px", height: "40px", color:"#ffffff", borderRadius: "5px", border:"none", marginTop:"8px"}}>
+                            Sign Up
+                        </button>
             
                     </form>
 
-                    {confirmReg ? <p style={{ color: "green" }}>{confirmReg}</p> : null}
+                    {confirmReg ? <p className ="text-primary">Thank you for signing up, you can sign in now </p> : null}
         
                 </Modal.Body>
 

@@ -6,6 +6,8 @@ import moment from "moment";
 import {useNavigate} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 //import { ArrowRight } from 'react-bootstrap-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEdit, faTrashCan, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
@@ -58,7 +60,7 @@ return (
     <div>
         <Navbar bg="light" expand="lg" fixed="top"> 
                     <Container>
-                        <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>   
+                        <Navbar.Brand className="mx-5 text-primary">Dream Pray Travel</Navbar.Brand>   
                         <Navbar.Collapse className="d-flex justify-content-end">                            
                             {/* <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
                             <Link to = {"/add"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></Link>
@@ -75,6 +77,7 @@ return (
                     <img src={alluser.avatar} height="50px" width="50px"></img>                 
                     <p>{alluser.email}</p>
                     <p>{alluser.bio}</p>
+ 
                     
                     </>
                     )            

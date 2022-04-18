@@ -5,6 +5,8 @@ import moment from "moment";
 import {useNavigate, useParams} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 //import { ArrowRight } from 'react-bootstrap-icons';
@@ -19,7 +21,7 @@ const Profile = (props) => {
 
     const {username} = useParams();    
     const [tripListByUser, setTripListByUser] = useState([]);
-    const [allUsers, setAllUsers] = useState([]);
+    const {loggedInUser} = props;
     
     const [userDetails, setUserDetails] = useState({});
 
@@ -54,6 +56,8 @@ const Profile = (props) => {
         })
         .catch((err) => console.log(err))
     }, [])
+
+
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/tripsbyuser/${username}`,
@@ -96,15 +100,17 @@ const Profile = (props) => {
 return (
     
     <div>
-        {/* !tripListByUser.length ? <CircularProgress /> : (  */}
-
-
+        
         <Navbar bg="light" expand="lg" fixed="top"> 
                     <Container>
                         <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>   
                         <Navbar.Collapse className="d-flex justify-content-end">                           
                             <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
+                            
+                            {username === loggedInUser.username &&
                             <Link to = {"/add"} style={{textDecoration: "none", color:"gray"}} className="me-5"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></Link>
+                            }
+                            
                             <button onClick={logoutHandler} className={styles.btn1}><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button>                              
                         </Navbar.Collapse>
                     </Container>                                             
@@ -116,56 +122,60 @@ return (
 
         
         <div className="d-flex justify-content-between w-75 mx-auto">
-            <div>
-                {tripListByUser?.map((trip,index) => {
+            <Container>
+                <Row>
+                    <Col sm={8}>
+                        <div>
+                            {tripListByUser?.map((trip,index) => {
+                                return (
+                                    <>
+                                    <Card key={index} border = "light" className = "mt-20 shadow p-3 mb-5 mx-auto bg-white rounded">
+                                        <Container>
+                                            <Row>
+                                                <Col sm={8}><Card.Title><Link to = {`/${trip._id}`}>{trip.title}</Link></Card.Title>
+                                                <Card.Subtitle>{trip.location}</Card.Subtitle>
+                                                <Card.Text className="mx-10">{trip.description.substring(0,200)} ... <Link to = {`/${trip._id}`} style={{textDecoration: "none", color:"gray",letterSpacing: "4px"}}> CONTINUE READING</Link></Card.Text>
+                                                </Col>
+                                                
+                                                <Col sm={4}><Card.Img src={trip.selectedFile}   className="mt-20  shadow p-2 mb-5 bg-white rounded"></Card.Img></Col>
+                                            </Row>
+                                        </Container>               
 
-            return (
-            <>
-                <Card key={index} border = "light" className = "mt-20 shadow p-3 mb-5 mx-auto bg-white rounded">
-                <div className= "d-flex justify-content-between">
-                    <Card style = {{border:"none"}}>
-                        <Card.Title><Link to = {`/${trip._id}`}>{trip.title}</Link></Card.Title>                
-                        <Card.Subtitle>{trip.location}</Card.Subtitle>                
-                        <Card.Text className="mx-10">{trip.description}</Card.Text>
-                        {/* <Card.Subtitle>Hello, This is {trip.postedBy?.email}</Card.Subtitle> */}
-                    </Card>
-                    
-                    {/* <div>
-                        <img src={trip.selectedFile} width="200px" height="150px" className="mt-20 shadow p-2 mb-5 bg-white rounded"></img>        
-                    </div>                     */}
+                                    </Card>
 
-                    <Card.Img src={trip.selectedFile} width="200px" height="150px" className="mt-20 shadow p-2 mb-5 bg-white rounded"></Card.Img>
+                                    </>
 
-                </div>
-                </Card>
-
-            </>
-            )
-        
-        
-        })
+                                    )                
+                    })
 
         }
-            </div>
+                        </div>
+                    </Col>
 
-            
-            <div>
-                <Card className="w-75 mt-20 shadow p-3 mb-5 mx-auto bg-white rounded">
-                    <Card.Title>Hello, This is {username}</Card.Title>                     
-                
-                    <img  src={userDetails?.avatar}  width="50px" height="auto" style={{color:"gray", marginBottom:"5px", borderRadius:"50%"}}></img> 
-                    <Link to = {`/updateuser/${username}`} style={{textDecoration: "none", color:"gray", marginLeft:"5px", marginRight:"5px"}}><FontAwesomeIcon icon={faEdit} style={{display:"inline"}}></FontAwesomeIcon></Link> 
-                    <Card.Subtitle style={{color:"gray", marginBottom:"5px"}}>{userDetails?.email}</Card.Subtitle>
-                                        
-                    {/* <Card.Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Card.Text> */}
-                    <Card.Text>{userDetails?.bio}</Card.Text>
-                </Card>                
-            </div>
+
+
+                    <Col sm={4}>
+                        <div>
+                            <Card className="w-75 mt-20 shadow p-3 mb-5 mx-auto bg-white rounded">
+                                <Card.Title>Hello, This is {username}</Card.Title> 
+                                <img  src={userDetails?.avatar}  width="50px" height="auto" style={{color:"gray", marginBottom:"5px", borderRadius:"50%"}}></img> 
+
+                                {username === loggedInUser.username &&
+                                <Link to = {`/updateuser/${username}`} style={{textDecoration: "none", color:"gray", marginLeft:"5px", marginRight:"5px"}}><FontAwesomeIcon icon={faEdit} style={{display:"inline"}}></FontAwesomeIcon></Link> 
+                                }
+
+                                <Card.Subtitle style={{color:"gray", marginBottom:"5px"}}>{userDetails?.email}</Card.Subtitle>
+                                <Card.Text>{userDetails?.bio}</Card.Text>
+                            </Card>                
+                        </div>
+                    </Col>
+
+                </Row>
+
+            </Container>           
 
 
         </div>
-        {/* ) */}
-
 
     </div>
 )

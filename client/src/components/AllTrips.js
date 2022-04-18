@@ -15,15 +15,19 @@ import { CircularProgress } from '@mui/material';
 import styles from './AllTrips.module.css';
 
 
+
 const AllTrips = (props) => {
 
-    const {trips, setTrips} = props;
-    const [user, setUser] = useState({});
+    const {trips, setTrips, user, setUser} = props;
+    //const {trips, setTrips} = props;
+  
+    //const [user, setUser] = useState({});
    // const [isLoading, setIsLoading] = useState(false);
     
     const navigate = useNavigate();
-    
 
+    
+    //fetching data for all the trips
     useEffect (() => {
         axios.get("http://localhost:8000/api/trips")
         .then((res) => {
@@ -36,6 +40,7 @@ const AllTrips = (props) => {
     }, [])
 
 
+    //delete trip 
     const deleteTrip = (idForDelete) => {        
         axios.delete(`http://localhost:8000/api/trips/${idForDelete}`)
         .then((res) =>{
@@ -62,6 +67,8 @@ const AllTrips = (props) => {
         },[])
 
         
+
+        //logout funtionality located on the top right corner of the navbar
         const logoutHandler = (e) => {
         axios.post("http://localhost:8000/api/users/logout",
         {},
@@ -81,24 +88,47 @@ const AllTrips = (props) => {
 
     }
 
+
+
 return (
     <div>
         {/* !trips.length ? <CircularProgress /> : (  */}
 
         <Navbar bg="light" expand="lg" fixed="top"> 
                     <Container>
-                        <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>   
+                        <Navbar.Brand className="mx-5">Dream Pray Travel</Navbar.Brand>  
+                    
                         <Navbar.Collapse className="d-flex justify-content-end">  
-                            <Link to={`/user/profile/${user.username}`} className="me-5"><img style={{border:"1px solid gray", borderRadius:"50%", height:"35px", width:"35px"}} src={user.avatar}></img></Link>                                                       
-                            <Link to = {"/home"} style={{textDecoration: "none", color:"gray"}} ><FontAwesomeIcon icon={faHome}></FontAwesomeIcon></Link>
-                            <Link to = {"/add"} style={{textDecoration: "none", color:"gray"}} className="mx-5"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></Link>
-                            <button onClick={logoutHandler} style={{color:"gray",border:"none", background:"white",width:"10px"}} ><FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon></button> 
+
+                            <Link to={`/user/profile/${user.username}`} 
+                            className="me-5">
+                                <img style={{border:"1px solid gray", borderRadius:"50%", height:"35px", width:"35px"}} src={user.avatar}></img>
+                            </Link>                                                       
+                            
+                            <Link to = {"/home"} 
+                            style={{textDecoration: "none", color:"gray"}} >
+                                <FontAwesomeIcon icon={faHome}></FontAwesomeIcon>
+                            </Link>
+                            
+
+                            <Link to = {"/add"} 
+                            style={{textDecoration: "none", color:"gray"}} 
+                            className="mx-5">
+                                <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+                            </Link>
+
+                            <button onClick={logoutHandler} 
+                            style={{color:"gray",border:"none", background:"white",width:"10px"}}>
+                                <FontAwesomeIcon icon={faSignOutAlt}></FontAwesomeIcon>
+                            </button> 
                             
                         </Navbar.Collapse>
                     </Container>                                             
         </Navbar>
 
 
+
+        {/* carousel display below navbar */}
         <Carousel>
             <Carousel.Item>
                 <img
@@ -147,24 +177,51 @@ return (
                     
 
                             {/* the loggedin user can only edit or delete their post */}
-                            {/* {trip.postedBy?.username === user.username && */}
+                            {trip.postedBy?.username === user.username &&
 
                             <div className="d-flex justify-content-around">
-                                <Link to = {`/edit/${trip._id}`} style={{textDecoration: "none", color:"gray", marginLeft:"5px", marginRight:"5px"}}><FontAwesomeIcon icon={faEdit} style={{display:"inline"}}></FontAwesomeIcon></Link>
-                                <button style={{color:"gray",border:"none", background:"white", width:"10px", marginRight:"5px"}} onClick={(e) =>{deleteTrip(trip._id)}}><FontAwesomeIcon icon={faTrashCan} style={{display:"inline"}}></FontAwesomeIcon></button>                             
+                                {/* edit icon */}
+                                <Link to = {`/edit/${trip._id}`} 
+                                style={{textDecoration: "none", color:"gray", marginLeft:"5px", marginRight:"5px"}}>
+                                    <FontAwesomeIcon icon={faEdit} style={{display:"inline"}}></FontAwesomeIcon>
+                                </Link>
+                                
+                                {/* delete icon */}
+                                <button 
+                                style={{color:"gray",border:"none", background:"white", width:"10px", marginRight:"5px"}} 
+                                onClick={(e) =>{deleteTrip(trip._id)}}>
+                                    <FontAwesomeIcon icon={faTrashCan} style={{display:"inline"}}></FontAwesomeIcon>
+                                </button>                             
                             </div>  
 
-                            {/* }  */}
-
+                            }  
 
                         </div>    
                                 
-                        <Card.Title className="mt-2" style={{letterSpacing: "2px"}}><Link to = {`/${trip._id}`}>{trip.title}</Link></Card.Title> 
-                        <Card.Subtitle className="mb-3 text-black-50">Posted: {moment(trip.postedAt).utcOffset('-08:00').fromNow()}</Card.Subtitle>
-                        <Card.Subtitle className="my-2">{trip.location}</Card.Subtitle> 
-                        <Card.Img src={trip.selectedFile}></Card.Img>                         
-                        <Card.Text className="mt-3">{trip.description.substring(0,300)} ...</Card.Text>     
-                        <Card.Subtitle style={{letterSpacing: "4px", textDecoration: "none"}} className="mx-auto mb-3"><Link to = {`/${trip._id}`} style={{textDecoration: "none", color:"gray"}}> CONTINUE READING</Link></Card.Subtitle> 
+                        <Card.Title className="mt-2" style={{letterSpacing: "2px"}}>
+                            <Link to = {`/${trip._id}`}>{trip.title}</Link>
+                        </Card.Title> 
+
+                        <Card.Subtitle className="mb-3 text-black-50">
+                            Posted: {moment(trip.postedAt).utcOffset('-08:00').fromNow()}
+                        </Card.Subtitle>
+
+                        <Card.Subtitle className="my-2">
+                            {trip.location}
+                        </Card.Subtitle> 
+
+                        <Card.Img src={trip.selectedFile}></Card.Img> 
+
+                        <Card.Text className="mt-3">
+                            {trip.description.substring(0,300)} ...
+                        </Card.Text>     
+
+                        <Card.Subtitle 
+                        style={{letterSpacing: "4px"}} 
+                        className="mx-auto mb-3">
+                            <Link to = {`/${trip._id}`} style={{textDecoration: "none", color:"gray"}}> CONTINUE READING</Link>
+                        </Card.Subtitle> 
+
                         <div style={{backgroundColor: "#53c3b5", width: "60px", height:"2px", margin:"auto"}}></div>                                                    
                     </Card>
                 </>

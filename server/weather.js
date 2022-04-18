@@ -8,13 +8,13 @@ module.exports = (app) => {
 let lon,lat;
 let cityname;
 
-	app.post('/6259b4d21026c595bce3397c', (req, res) => {
+	app.post('/weather', (req, res) => {
 
 		// lon = req.body.longitude;
         // lat = req.body.latitude;
         cityname = req.body.city;
 
-		res.redirect('/6259b4d21026c595bce3397c');
+		res.redirect('weather');
 		
 	})
 

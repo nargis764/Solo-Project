@@ -15,19 +15,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   const [trips, setTrips] = useState([]);  
-
+  const [user, setUser] = useState({});
 
   return (
     <BrowserRouter>
     <div>      
       <Routes>
         <Route path = "/" element = {<SignInSignUp/>}/>
-        <Route path = "/home" element = {<AllTrips trips = {trips} setTrips = {setTrips}/>}/>     
+        <Route path = "/home" element = {<AllTrips trips = {trips} setTrips = {setTrips} user={user} setUser={setUser}/>}/>     
         <Route path = "/add" element = {<AddTrip/>}/>       
         <Route path = "/edit/:id" element = {<EditTrip/>}/>
         <Route path = "/:id" element = {<ViewTrip trips = {trips} setTrips = {setTrips}/>}/>
-        <Route path = "/user/profile/:username" element = {<Profile/>}/>
-        <Route path="/allusers" element = {<AllUsers/>}/>
+        <Route path = "/user/profile/:username" element = {<Profile loggedInUser={user}/>}/>
+        <Route path="/allusers" element = {<AllUsers/>}/>        
         <Route path="/updateuser/:username" element = {<SetProfile/>}/>
       </Routes>
     </div>

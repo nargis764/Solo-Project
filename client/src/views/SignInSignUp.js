@@ -55,8 +55,8 @@ const handleShowSignUp = () => setShowSignUp(true);
             
             {/* <MapContainer/> */}
         
-            <SignIn handleClose = {handleCloseSignIn} handleShow = {handleShowSignIn} show = {showSignIn} setShow = {setShowSignIn}/> 
-            <Register handleClose = {handleCloseSignUp} handleShow = {handleShowSignUp} show = {showSignUp} setShow = {setShowSignUp}/>
+            <SignIn handleClose = {handleCloseSignIn} handleShowSignIn = {handleShowSignIn} handleShowSignUp = {handleShowSignUp} show = {showSignIn} setShow = {setShowSignIn}/> 
+            <Register handleClose = {handleCloseSignUp} handleShowSignIn = {handleShowSignIn} handleShowSignUp = {handleShowSignUp} show = {showSignUp} setShow = {setShowSignUp}/>
         </div>
     )
 }
