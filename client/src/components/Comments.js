@@ -1,19 +1,17 @@
 import React, {useState} from 'react'
-import axios from "axios";
 import Form from "react-bootstrap/Form";
 
 
 const Comments = (props) => {
 
     
-    const {tripId,onSubmitProp} =props;
+    const {tripId,onSubmitProp} = props;
+    const [comment, setComment] = useState("")
 
     const submitHandler = (e) => {
             e.preventDefault();
-            console.log(e.target)
-            console.log(e.target[0].value)
-            onSubmitProp(e.target[0].value, tripId)
-        
+            onSubmitProp(comment, tripId)
+            setComment("");        
     }
 
 return (
@@ -34,11 +32,16 @@ return (
     
 
     <div>
-        <Form  className="w-50 mx-auto" onSubmit={submitHandler}>
-            
-            <Form.Control type = "text" placeholder = 'Write a comment..'/>
+        <Form  className="w-50 mx-auto" onSubmit={submitHandler}>            
+            <Form.Control 
+            type = "text" 
+            value = {comment}
+            onChange = {(e) => setComment(e.target.value)}
+            placeholder = 'Write a comment..'
+            />
             {/* <button>Post</button> */}
         </Form>
+        
     </div>
 )
 }

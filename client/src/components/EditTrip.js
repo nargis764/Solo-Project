@@ -10,14 +10,15 @@ import {Link} from "react-router-dom";
 import styles from './EditTrip.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEdit, faTrashCan, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-
+import FormTrip from "./FormTrip";
 
 
 const EditTrip = () => {
-    const [tripDetails, setTripDetails] = useState({title:"", description:"", location:"", selectedFile:""})
-    
+
     const {id} = useParams();
     const [errors, setErrors] = useState({});
+    const [loaded, setLoaded] = useState(false);
+    const [trip, setTrip] = useState({});
     const navigate = useNavigate();
 
 
@@ -26,20 +27,20 @@ const EditTrip = () => {
         axios.get(`http://localhost:8000/api/trips/${id}`)
         .then((res) => {
             console.log(res.data);
-            setTripDetails(res.data);
+            setTrip(res.data);
             // setTitle(res.data.title);
             // setDescription(res.data.description);
             // setLocation(res.data.location);
             // setImage(res.data.image);
+            setLoaded(true);
         })
 
     }, [])
 
 
 
-    const editTrip = (e) => {
-        e.preventDefault();
-        axios.put(`http://localhost:8000/api/trips/${id}`, tripDetails)        
+    const editTrip = (tripParam) => {
+        axios.put(`http://localhost:8000/api/trips/${id}`, tripParam)        
         .then((res) => {
             console.log(res);
             console.log(res.data);
@@ -81,47 +82,19 @@ return (
                     </Container>                                             
         </Navbar>
 
-        <form onSubmit = {editTrip} className={styles.form}>
-            <Form.Group className="mb-3">
-                <Form.Label>Title</Form.Label>
-                <Form.Control type="text" name="title" value = {tripDetails.title} onChange={(e) => setTripDetails({...tripDetails, title: e.target.value})}/>
-        </Form.Group>
-
-            {
-                errors.title? 
-                <p style={{color:"red"}}>{errors.title.message}</p>
-                :null
-            }
-
-            
-        <Form.Group className="mb-3">
-            <Form.Label>Description</Form.Label>
-            <Form.Control as="textarea" rows={4} name="description" value = {tripDetails.description} onChange={(e) => setTripDetails({...tripDetails, description: e.target.value})}/>
-        </Form.Group>
-
-            {
-                errors.description? 
-                <p style={{color:"red"}}>{errors.description.message}</p>
-                :null
-            }
-
-            <Form.Group className="mb-3">
-                <Form.Label>Location</Form.Label>
-                <Form.Control type="text" name="location" value = {tripDetails.location} onChange={(e) => setTripDetails({...tripDetails, location: e.target.value})}/>
-            </Form.Group>
-
-            {
-                errors.location? 
-                <p style={{color:"red"}}>{errors.location.message}</p>
-                :null
-            }
-            
-            <Form.Group className="mb-3">
-                <FileBase64 type = "file" multiple={false} onDone={({ base64 }) => setTripDetails({ ...tripDetails, selectedFile: base64 })} />        
-            </Form.Group>
-            
-            <button className={styles.button1}>Edit my trip</button>
-        </form>        
+        {loaded &&
+        <FormTrip 
+        onSubmitProp = {editTrip} 
+        initialTitle = {trip.title}
+        initialDescription = {trip.description}
+        initialLocation = {trip.location}
+        initialSelectedFile = {trip.selectedFile}
+        errors = {errors}
+        btnText = "Edit Trip"
+        /> 
+        }
+        
+        
     </div>
 )
 }

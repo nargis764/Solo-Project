@@ -80,9 +80,13 @@ return (
                     </Container>                                             
         </Navbar>
 
-
-        <Form onSubmit={updateProfile} className={styles.form}>            
-            <Form.Group className="mb-4">
+            <Form onSubmit={updateProfile} className={styles.form}>
+            {/* <div>
+                <label>username</label>
+                <input type = "text" value = {username} onChange = {(e) => setUsername(e.target.value)}/>
+            </div>     */}
+            <Form.Group>
+                <Form.Label>About Me</Form.Label>
                 <Form.Control 
                 type = "text" 
                 value = {bio}
@@ -90,23 +94,26 @@ return (
                 onChange = {(e) => setBio(e.target.value)}/>
             </Form.Group>
 
-            <Form.Group className="mb-4">                               
+            <Form.Group>
+                <Form.Label>Avatar</Form.Label>                
                 <Form.Control 
                 type = "text" 
                 value = {avatar} 
-                placeholder="Update Photo" 
                 onChange = {(e) => setAvatar(e.target.value)}/>
             </Form.Group>
 
-            <Form.Group className="mb-4">                               
+            <Form.Group>
+                <Form.Label>Email</Form.Label>                
                 <Form.Control 
                 type = "text" 
                 value = {email}
-                placeholder="Update Email" 
+                placeholder="Email" 
                 onChange = {(e) => setEmail(e.target.value)}/>
             </Form.Group>
 
-            <button className={styles.button1}>Edit Profile</button>
+            <button>
+            Edit Profile
+            </button>
         </Form>
     </div>
 )
